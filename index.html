@@ -12,20 +12,24 @@
 
     <style>
         :root {
+            /* 深邃学术紫 —— 比清华紫更深，更显质感 */
+            --accent: #4B2E6B;
+            --accent-hover: #3B1F55;
+            --accent-soft: rgba(75, 46, 107, 0.08);
+            --accent-glow: rgba(88, 54, 124, 0.15);
             --text-primary: #1c1917;
-            --text-secondary: #57534e;
-            --text-muted: #78716c;
-            --text-light: #a8a29e;
-            --border-light: #e7e5e4;
-            --accent: #4f46e5;
-            --accent-hover: #4338ca;
-            --accent-soft: rgba(79, 70, 229, 0.08);
-            --bg: #fafaf9;
+            --text-secondary: #4a4642;
+            --text-muted: #6b6560;
+            --text-light: #9c948c;
+            --border-light: #e4e0dc;
+            --bg: #faf9f8;
             --bg-card: #ffffff;
-            --bg-soft: #f5f5f4;
+            --bg-soft: #f5f3f2;
             --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
             --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         * {
@@ -45,39 +49,110 @@
             overflow-x: hidden;
         }
 
-        .cursor-glow {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            background: radial-gradient(circle at center,
-                    rgba(79, 70, 229, 0.10) 0%,
-                    rgba(124, 58, 237, 0.05) 35%,
-                    transparent 70%);
-            filter: blur(40px);
-            pointer-events: none;
-            z-index: 0;
-            transform: translate(-50%, -50%);
-            transition: transform 0.15s ease-out, opacity 0.2s;
-            opacity: 0.7;
-            will-change: transform;
-        }
-
-        body::before {
-            content: "";
+        /* ── 动态光晕背景（鼠标牵引物理效果） ── */
+        .ambient-glow {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: -1;
-            background:
-                radial-gradient(ellipse at 25% 15%, rgba(79, 70, 229, 0.02) 0%, transparent 55%),
-                radial-gradient(ellipse at 75% 80%, rgba(124, 58, 237, 0.025) 0%, transparent 60%),
-                radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.003) 0%, transparent 70%);
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.28;
+            will-change: transform;
+            transition: opacity 0.5s ease;
+        }
+
+        .orb-1 {
+            width: 75vw;
+            height: 75vw;
+            max-width: 950px;
+            max-height: 950px;
+            background: radial-gradient(circle at 30% 40%, rgba(75, 46, 107, 0.22) 0%, transparent 70%);
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+        }
+
+        .orb-2 {
+            width: 65vw;
+            height: 65vw;
+            max-width: 850px;
+            max-height: 850px;
+            background: radial-gradient(circle at 70% 60%, rgba(88, 54, 124, 0.18) 0%, transparent 70%);
+            bottom: 0;
+            right: 0;
+            transform: translate(50%, 50%);
+        }
+
+        .orb-3 {
+            width: 55vw;
+            height: 55vw;
+            max-width: 750px;
+            max-height: 750px;
+            background: radial-gradient(circle at 50% 50%, rgba(75, 46, 107, 0.15) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* 光标光晕 —— 更紧密跟随鼠标，增强交互感 */
+        .cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center,
+                    rgba(75, 46, 107, 0.14) 0%,
+                    rgba(88, 54, 124, 0.07) 35%,
+                    transparent 70%);
+            filter: blur(45px);
+            pointer-events: none;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            will-change: transform;
+            transition: opacity 0.3s;
+            opacity: 0.8;
+        }
+
+        /* 顶部进度条 */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            width: 0%;
+            background: var(--accent);
+            z-index: 100;
+            pointer-events: none;
+            transition: width 0.1s linear;
+            border-radius: 0 1px 1px 0;
+            box-shadow: 0 0 8px rgba(75, 46, 107, 0.35);
+        }
+
+        @media (max-width: 600px) {
+            .scroll-progress {
+                height: 1.5px;
+                box-shadow: 0 0 5px rgba(75, 46, 107, 0.25);
+            }
+            .cursor-glow {
+                width: 200px;
+                height: 200px;
+                filter: blur(35px);
+                opacity: 0.5;
+            }
+            .ambient-orb {
+                filter: blur(70px);
+            }
         }
 
         .container {
@@ -85,13 +160,15 @@
             margin: 0 auto;
             padding: 56px 28px 64px;
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
 
+        /* Header 入场动画 */
         .header {
             margin-bottom: 52px;
             padding-bottom: 28px;
             border-bottom: 1px solid var(--border-light);
+            animation: headerSlideIn 0.75s var(--ease-out-expo) forwards;
         }
 
         .header h1 {
@@ -102,6 +179,10 @@
             margin-bottom: 2px;
             color: var(--text-primary);
             line-height: 1.2;
+            opacity: 0;
+            transform: translateY(14px);
+            animation: headerChildReveal 0.6s var(--ease-out-expo) forwards;
+            animation-delay: 0.05s;
         }
 
         .header .subtitle {
@@ -111,12 +192,42 @@
             margin-bottom: 18px;
             font-weight: 400;
             letter-spacing: 0.01em;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: headerChildReveal 0.55s var(--ease-out-expo) forwards;
+            animation-delay: 0.18s;
         }
 
         .contact-links {
             display: flex;
             flex-wrap: wrap;
             gap: 8px 20px;
+            opacity: 0;
+            transform: translateY(8px);
+            animation: headerChildReveal 0.5s var(--ease-out-expo) forwards;
+            animation-delay: 0.3s;
+        }
+
+        @keyframes headerSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes headerChildReveal {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .contact-links a {
@@ -154,7 +265,7 @@
             margin-bottom: 48px;
             opacity: 0;
             transform: translateY(30px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
+            transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
         }
 
         section.visible {
@@ -172,6 +283,7 @@
             margin-bottom: 18px;
             padding-bottom: 10px;
             border-bottom: 2px solid var(--border-light);
+            transition: border-color 0.6s ease;
         }
 
         .summary p {
@@ -182,16 +294,47 @@
             line-height: 1.75;
         }
 
+        /* 条目卡片动画与交互 */
         .entry {
             margin-bottom: 26px;
             padding: 16px 20px;
             border-radius: 12px;
             border: 1px solid transparent;
-            transition: var(--transition);
+            transition: background 0.4s var(--ease-out-expo),
+                border-color 0.4s var(--ease-out-expo),
+                box-shadow 0.4s var(--ease-out-expo),
+                transform 0.35s var(--ease-out-expo);
+            opacity: 0;
+            transform: translateY(16px);
         }
 
         .entry:last-child {
             margin-bottom: 0;
+        }
+
+        section.visible .entry {
+            animation: entryReveal 0.55s var(--ease-out-expo) forwards;
+        }
+
+        section.visible .entry:nth-child(2) {
+            animation-delay: 0.12s;
+        }
+        section.visible .entry:nth-child(3) {
+            animation-delay: 0.22s;
+        }
+        section.visible .entry:nth-child(4) {
+            animation-delay: 0.32s;
+        }
+
+        @keyframes entryReveal {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .entry:hover {
@@ -199,6 +342,12 @@
             border-color: var(--border-light);
             box-shadow: var(--shadow-md);
             transform: translateY(-2px);
+            border-left: 1px solid rgba(75, 46, 107, 0.35);
+            transition: background 0.3s var(--ease-out-expo),
+                border-color 0.3s var(--ease-out-expo),
+                box-shadow 0.35s var(--ease-out-expo),
+                transform 0.35s var(--ease-out-back),
+                border-left 0.3s var(--ease-out-expo);
         }
 
         .entry-header {
@@ -280,11 +429,12 @@
             height: 4px;
             background: var(--text-muted);
             border-radius: 50%;
-            transition: background var(--transition);
+            transition: background 0.3s var(--ease-out-expo), transform 0.3s var(--ease-out-expo);
         }
 
         .entry:hover li::before {
             background: var(--accent);
+            transform: scale(1.4);
         }
 
         .entry li strong {
@@ -335,7 +485,7 @@
         .status-ongoing {
             background: var(--accent-soft);
             color: var(--accent);
-            border: 1px solid rgba(79, 70, 229, 0.2);
+            border: 1px solid rgba(75, 46, 107, 0.25);
         }
 
         .skills-list {
@@ -355,14 +505,44 @@
             font-weight: 500;
             letter-spacing: 0.01em;
             cursor: default;
-            transition: var(--transition);
+            transition: background 0.3s var(--ease-out-expo),
+                color 0.3s var(--ease-out-expo),
+                border-color 0.3s var(--ease-out-expo),
+                transform 0.3s var(--ease-out-back),
+                box-shadow 0.3s var(--ease-out-expo);
+            opacity: 0;
+            transform: translateY(8px) scale(0.94);
+        }
+
+        section.visible .skill-tag {
+            animation: skillTagReveal 0.45s var(--ease-out-expo) forwards;
+        }
+
+        section.visible .skill-tag:nth-child(1) { animation-delay: 0.08s; }
+        section.visible .skill-tag:nth-child(2) { animation-delay: 0.13s; }
+        section.visible .skill-tag:nth-child(3) { animation-delay: 0.18s; }
+        section.visible .skill-tag:nth-child(4) { animation-delay: 0.23s; }
+        section.visible .skill-tag:nth-child(5) { animation-delay: 0.28s; }
+        section.visible .skill-tag:nth-child(6) { animation-delay: 0.33s; }
+        section.visible .skill-tag:nth-child(7) { animation-delay: 0.38s; }
+
+        @keyframes skillTagReveal {
+            from {
+                opacity: 0;
+                transform: translateY(8px) scale(0.94);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .skill-tag:hover {
             background: var(--accent-soft);
             color: var(--accent);
             border-color: var(--accent);
-            transform: scale(1.05);
+            transform: scale(1.06);
+            box-shadow: 0 2px 12px rgba(75, 46, 107, 0.15);
         }
 
         .interests p {
@@ -412,36 +592,79 @@
             color: var(--text-light);
             letter-spacing: 0.03em;
             font-family: "Merriweather", "Georgia", serif;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s var(--ease-out-expo), transform 0.5s var(--ease-out-expo);
+        }
+
+        .footer.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 打印样式优化 */
+        @media print {
+            .ambient-glow, .cursor-glow, .scroll-progress {
+                display: none !important;
+            }
+            section {
+                opacity: 1 !important;
+                transform: none !important;
+                break-inside: avoid;
+            }
+            .entry {
+                opacity: 1 !important;
+                transform: none !important;
+                animation: none !important;
+                break-inside: avoid;
+            }
+            .skill-tag {
+                opacity: 1 !important;
+                transform: none !important;
+                animation: none !important;
+            }
+            .header {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            .header h1, .header .subtitle, .contact-links {
+                opacity: 1 !important;
+                transform: none !important;
+                animation: none !important;
+            }
+            .footer {
+                opacity: 1 !important;
+                transform: none !important;
+            }
         }
 
         @media (max-width: 600px) {
             .container {
                 padding: 36px 18px 48px;
             }
-
             .header h1 {
                 font-size: 1.9rem;
             }
-
             section h2 {
                 font-size: 1.15rem;
             }
-
             .entry-header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 2px;
             }
-
             .entry {
                 padding: 12px 14px;
             }
-
-            .cursor-glow {
-                width: 250px;
-                height: 250px;
-                filter: blur(35px);
-                opacity: 0.5;
+            section.visible .entry {
+                animation-duration: 0.45s;
+            }
+            section.visible .entry:nth-child(2) { animation-delay: 0.08s; }
+            section.visible .entry:nth-child(3) { animation-delay: 0.15s; }
+            section.visible .entry:nth-child(4) { animation-delay: 0.22s; }
+            section.visible .skill-tag {
+                animation-duration: 0.35s;
             }
         }
     </style>
@@ -449,6 +672,14 @@
 
 <body>
 
+    <!-- 动态光晕背景（响应鼠标物理牵引） -->
+    <div class="ambient-glow">
+        <div class="ambient-orb orb-1"></div>
+        <div class="ambient-orb orb-2"></div>
+        <div class="ambient-orb orb-3"></div>
+    </div>
+
+    <div class="scroll-progress" id="scrollProgress"></div>
     <div class="cursor-glow" id="cursorGlow"></div>
 
     <div class="container">
@@ -545,56 +776,211 @@
                 </p>
             </div>
         </section>
+
+        <footer class="footer" id="pageFooter">
+            &copy; 2026 Yiming Li
+        </footer>
     </div>
 
     <script>
         (function() {
-            const glow = document.getElementById('cursorGlow');
-            if (!glow) return;
-
-            let mouseX = -200;
-            let mouseY = -200;
-            let currentX = -200;
-            let currentY = -200;
-            const speed = 0.08;
-
-            function updateGlow() {
-                currentX += (mouseX - currentX) * speed;
-                currentY += (mouseY - currentY) * speed;
-                glow.style.transform = `translate(${currentX}px, ${currentY}px) translate(-50%, -50%)`;
-                requestAnimationFrame(updateGlow);
-            }
-
-            document.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
+            // ──────────────────────────────────────
+            // 1. 动态光晕物理牵引效果（鼠标驱动）
+            // ──────────────────────────────────────
+            const orbs = document.querySelectorAll('.ambient-orb');
+            const cursorGlow = document.getElementById('cursorGlow');
+            
+            // 鼠标位置与窗口中心点
+            const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+            const windowCenter = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+            
+            // 存储每个光晕的物理状态
+            const orbData = [];
+            
+            // 初始化光晕：为每个光晕设置不同的速度（惯性）和相对于鼠标的偏移量
+            orbs.forEach((orb, index) => {
+                // 初始位置设为窗口中心
+                const startX = windowCenter.x;
+                const startY = windowCenter.y;
+                
+                // 通过 transform 设置初始位置
+                orb.style.transform = `translate(${startX}px, ${startY}px) translate(-50%, -50%)`;
+                
+                // 为每个光晕分配不同的参数，营造层次感
+                let speed, offsetX, offsetY;
+                if (index === 0) { // 大光晕
+                    speed = 0.012;
+                    offsetX = -180;
+                    offsetY = -120;
+                } else if (index === 1) { // 中光晕
+                    speed = 0.02;
+                    offsetX = 220;
+                    offsetY = 80;
+                } else { // 小光晕
+                    speed = 0.03;
+                    offsetX = -60;
+                    offsetY = 240;
+                }
+                
+                orbData.push({
+                    el: orb,
+                    x: startX,
+                    y: startY,
+                    speed: speed,
+                    offsetX: offsetX,
+                    offsetY: offsetY,
+                    // 微小的呼吸感波动参数
+                    breathAmp: Math.random() * 15 + 5,
+                    breathSpeed: Math.random() * 0.002 + 0.001,
+                    breathOffset: Math.random() * Math.PI * 2
+                });
             });
 
+            // 鼠标移动事件监听
+            document.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            });
+
+            // 鼠标离开页面时，光晕缓慢回归到屏幕中心
             document.addEventListener('mouseleave', () => {
-                glow.style.opacity = '0';
+                mouse.x = windowCenter.x;
+                mouse.y = windowCenter.y;
+                if (cursorGlow) cursorGlow.style.opacity = '0';
             });
 
             document.addEventListener('mouseenter', () => {
-                glow.style.opacity = '0.7';
+                if (cursorGlow) cursorGlow.style.opacity = '0.8';
             });
 
-            if (window.innerWidth < 768) {
-                glow.style.display = 'none';
+            // 窗口大小改变时更新中心点
+            window.addEventListener('resize', () => {
+                windowCenter.x = window.innerWidth / 2;
+                windowCenter.y = window.innerHeight / 2;
+            });
+
+            // 动画循环：使用 requestAnimationFrame 实现平滑的物理牵引
+            function animateBackground() {
+                const time = Date.now();
+                
+                // 更新背景光晕
+                orbData.forEach(data => {
+                    // 目标位置 = 鼠标位置 + 固定偏移量
+                    let targetX = mouse.x + data.offsetX;
+                    let targetY = mouse.y + data.offsetY;
+                    
+                    // 添加微小的呼吸波动，使光晕看起来更自然
+                    const breathX = Math.sin(time * data.breathSpeed + data.breathOffset) * data.breathAmp;
+                    const breathY = Math.cos(time * data.breathSpeed * 1.3 + data.breathOffset) * data.breathAmp;
+                    targetX += breathX;
+                    targetY += breathY;
+                    
+                    // 缓动公式：当前坐标 += (目标坐标 - 当前坐标) * 速度系数
+                    // 速度系数越小，跟随越缓慢（惯性越大）
+                    data.x += (targetX - data.x) * data.speed;
+                    data.y += (targetY - data.y) * data.speed;
+                    
+                    // 应用变换
+                    data.el.style.transform = `translate(${data.x}px, ${data.y}px) translate(-50%, -50%)`;
+                });
+
+                // 更新光标光晕（更紧密跟随鼠标，速度稍快）
+                if (cursorGlow) {
+                    // 获取当前计算样式中的 transform 值（如果有的话）
+                    // 为了简单，我们直接在 JS 中维护光标光晕的状态
+                    if (!cursorGlow._state) {
+                        cursorGlow._state = { x: mouse.x, y: mouse.y };
+                    }
+                    const state = cursorGlow._state;
+                    const cursorSpeed = 0.08;
+                    state.x += (mouse.x - state.x) * cursorSpeed;
+                    state.y += (mouse.y - state.y) * cursorSpeed;
+                    cursorGlow.style.transform = `translate(${state.x}px, ${state.y}px) translate(-50%, -50%)`;
+                }
+
+                requestAnimationFrame(animateBackground);
             }
 
-            updateGlow();
+            // 启动背景动画
+            animateBackground();
 
-            const observer = new IntersectionObserver((entries) => {
+            // ──────────────────────────────────────
+            // 2. 滚动进度条
+            // ──────────────────────────────────────
+            const progressBar = document.getElementById('scrollProgress');
+
+            function updateProgress() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                if (scrollHeight <= 0) {
+                    progressBar.style.width = '0%';
+                    return;
+                }
+                const progress = Math.min((scrollTop / scrollHeight) * 100, 100);
+                progressBar.style.width = progress + '%';
+            }
+
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        updateProgress();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            updateProgress();
+
+            // ──────────────────────────────────────
+            // 3. Section 入场动画 (Intersection Observer)
+            // ──────────────────────────────────────
+            const sectionObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
+                        sectionObserver.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.08 });
+            }, { threshold: 0.06, rootMargin: '0px 0px -20px 0px' });
 
             document.querySelectorAll('section').forEach(section => {
-                observer.observe(section);
+                sectionObserver.observe(section);
+            });
+
+            // Footer 入场
+            const footer = document.getElementById('pageFooter');
+            if (footer) {
+                const footerObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            footerObserver.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '0px 0px -10px 0px' });
+
+                footerObserver.observe(footer);
+            }
+
+            // 页面从缓存恢复时重新触发检测
+            window.addEventListener('pageshow', (event) => {
+                if (event.persisted) {
+                    updateProgress();
+                    document.querySelectorAll('section').forEach(section => {
+                        const rect = section.getBoundingClientRect();
+                        if (rect.top < window.innerHeight && rect.bottom > 0) {
+                            section.classList.add('visible');
+                        }
+                    });
+                    if (footer) {
+                        const rect = footer.getBoundingClientRect();
+                        if (rect.top < window.innerHeight && rect.bottom > 0) {
+                            footer.classList.add('visible');
+                        }
+                    }
+                }
             });
         })();
     </script>
