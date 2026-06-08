@@ -8,20 +8,24 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --text-primary: #1a1a1a;
-            --text-secondary: #4b5563;
-            --text-muted: #6b7280;
-            --text-light: #9ca3af;
-            --border-light: #e0e0e0;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --bg: #fdfdfd;
-            --bg-soft: #f8f9fa;
-            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --text-primary: #1c1917;
+            --text-secondary: #57534e;
+            --text-muted: #78716c;
+            --text-light: #a8a29e;
+            --border-light: #e7e5e4;
+            --accent: #4f46e5;
+            --accent-hover: #4338ca;
+            --accent-soft: rgba(79, 70, 229, 0.08);
+            --bg: #fafaf9;
+            --bg-card: #ffffff;
+            --bg-soft: #f5f5f4;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -31,7 +35,7 @@
         }
 
         body {
-            font-family: "Times New Roman", "Georgia", "Cambria", "Linux Libertine", "Liberation Serif", serif;
+            font-family: "Merriweather", "Georgia", "Cambria", serif;
             color: var(--text-primary);
             line-height: 1.7;
             background: var(--bg);
@@ -49,7 +53,7 @@
             height: 400px;
             border-radius: 50%;
             background: radial-gradient(circle at center,
-                    rgba(37, 99, 235, 0.10) 0%,
+                    rgba(79, 70, 229, 0.10) 0%,
                     rgba(124, 58, 237, 0.05) 35%,
                     transparent 70%);
             filter: blur(40px);
@@ -71,8 +75,8 @@
             pointer-events: none;
             z-index: -1;
             background:
-                radial-gradient(ellipse at 25% 15%, rgba(37, 99, 235, 0.015) 0%, transparent 55%),
-                radial-gradient(ellipse at 75% 80%, rgba(124, 58, 237, 0.02) 0%, transparent 60%),
+                radial-gradient(ellipse at 25% 15%, rgba(79, 70, 229, 0.02) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 80%, rgba(124, 58, 237, 0.025) 0%, transparent 60%),
                 radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.003) 0%, transparent 70%);
         }
 
@@ -84,7 +88,6 @@
             z-index: 1;
         }
 
-        /* Header */
         .header {
             margin-bottom: 52px;
             padding-bottom: 28px;
@@ -92,17 +95,17 @@
         }
 
         .header h1 {
-            font-family: "Playfair Display", "Georgia", "Times New Roman", serif;
+            font-family: "Playfair Display", "Georgia", serif;
             font-size: 2.4rem;
-            font-weight: 650;
+            font-weight: 700;
             letter-spacing: -0.02em;
             margin-bottom: 2px;
-            color: #111;
+            color: var(--text-primary);
             line-height: 1.2;
         }
 
         .header .subtitle {
-            font-family: "Times New Roman", "Georgia", serif;
+            font-family: "Merriweather", "Georgia", serif;
             font-size: 1.05rem;
             color: var(--text-muted);
             margin-bottom: 18px;
@@ -117,42 +120,62 @@
         }
 
         .contact-links a {
-            font-family: "Times New Roman", "Georgia", serif;
+            font-family: "Merriweather", "Georgia", serif;
             color: var(--text-secondary);
             text-decoration: none;
             font-size: 0.95rem;
-            transition: color 0.2s;
+            transition: color var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            position: relative;
+        }
+
+        .contact-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
         }
 
         .contact-links a:hover {
             color: var(--accent);
         }
 
-        /* 板块样式 */
-        section {
-            margin-bottom: 48px;
+        .contact-links a:hover::after {
+            width: 100%;
         }
 
-        /* 副标题：增大、加粗、突出 */
+        section {
+            margin-bottom: 48px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         section h2 {
-            font-family: "Times New Roman", "Georgia", "Cambria", serif;
+            font-family: "Merriweather", "Georgia", serif;
             font-size: 1.25rem;
-            /* 显著增大 */
             font-weight: 700;
-            /* 加粗 */
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            color: #1a1a1a;
+            color: var(--text-primary);
             margin-bottom: 18px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #d0d0d0;
+            border-bottom: 2px solid var(--border-light);
         }
 
         .summary p {
-            font-family: "Times New Roman", "Georgia", serif;
+            font-family: "Merriweather", "Georgia", serif;
             font-size: 1.02rem;
             color: var(--text-secondary);
             max-width: 640px;
@@ -161,10 +184,21 @@
 
         .entry {
             margin-bottom: 26px;
+            padding: 16px 20px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            transition: var(--transition);
         }
 
         .entry:last-child {
             margin-bottom: 0;
+        }
+
+        .entry:hover {
+            background: var(--bg-card);
+            border-color: var(--border-light);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
         }
 
         .entry-header {
@@ -177,14 +211,14 @@
         }
 
         .entry-title {
-            font-family: "Times New Roman", "Georgia", serif;
+            font-family: "Merriweather", "Georgia", serif;
             font-size: 1.05rem;
-            font-weight: 600;
-            color: #1a1a1a;
+            font-weight: 700;
+            color: var(--text-primary);
         }
 
         .entry-date {
-            font-family: "Times New Roman", "Georgia", serif;
+            font-family: "Merriweather", "Georgia", serif;
             font-size: 0.9rem;
             color: var(--text-light);
             white-space: nowrap;
@@ -192,7 +226,7 @@
         }
 
         .entry-org {
-            font-family: "Times New Roman", "Georgia", serif;
+            font-family: "Merriweather", "Georgia", serif;
             font-size: 0.95rem;
             color: var(--text-muted);
             margin-bottom: 8px;
@@ -203,10 +237,23 @@
             color: var(--accent);
             text-decoration: none;
             font-weight: 500;
+            position: relative;
+            transition: color var(--transition);
         }
 
-        .entry-org a:hover {
-            text-decoration: underline;
+        .entry-org a::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .entry-org a:hover::after {
+            width: 100%;
         }
 
         .entry ul {
@@ -215,7 +262,7 @@
         }
 
         .entry li {
-            font-family: "Times New Roman", "Georgia", serif;
+            font-family: "Merriweather", "Georgia", serif;
             position: relative;
             padding-left: 18px;
             font-size: 0.95rem;
@@ -231,22 +278,40 @@
             top: 0.55em;
             width: 4px;
             height: 4px;
-            background: #888;
+            background: var(--text-muted);
             border-radius: 50%;
+            transition: background var(--transition);
+        }
+
+        .entry:hover li::before {
+            background: var(--accent);
         }
 
         .entry li strong {
             color: var(--text-primary);
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .entry li a {
             color: var(--accent);
             text-decoration: none;
+            position: relative;
+            transition: color var(--transition);
         }
 
-        .entry li a:hover {
-            text-decoration: underline;
+        .entry li a::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .entry li a:hover::after {
+            width: 100%;
         }
 
         .entry li em {
@@ -255,7 +320,24 @@
             font-size: 0.88rem;
         }
 
-        /* 技能标签 */
+        .status-badge {
+            display: inline-block;
+            font-family: "Merriweather", "Georgia", serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            padding: 2px 10px;
+            border-radius: 12px;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+
+        .status-ongoing {
+            background: var(--accent-soft);
+            color: var(--accent);
+            border: 1px solid rgba(79, 70, 229, 0.2);
+        }
+
         .skills-list {
             display: flex;
             flex-wrap: wrap;
@@ -263,19 +345,28 @@
         }
 
         .skill-tag {
-            font-family: "Times New Roman", "Georgia", serif;
+            font-family: "Merriweather", "Georgia", serif;
             padding: 5px 16px;
             background: var(--bg-soft);
+            border: 1px solid var(--border-light);
             border-radius: 20px;
             font-size: 0.9rem;
             color: var(--text-secondary);
             font-weight: 500;
             letter-spacing: 0.01em;
+            cursor: default;
+            transition: var(--transition);
         }
 
-        /* 个人链接 */
+        .skill-tag:hover {
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
         .interests p {
-            font-family: "Times New Roman", "Georgia", serif;
+            font-family: "Merriweather", "Georgia", serif;
             font-size: 0.98rem;
             color: var(--text-secondary);
             display: flex;
@@ -286,20 +377,32 @@
 
         .interests p strong {
             color: var(--text-primary);
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .interests a {
             color: var(--accent);
             text-decoration: none;
             font-weight: 500;
+            position: relative;
+            transition: color var(--transition);
         }
 
-        .interests a:hover {
-            text-decoration: underline;
+        .interests a::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
         }
 
-        /* 页脚 */
+        .interests a:hover::after {
+            width: 100%;
+        }
+
         .footer {
             margin-top: 48px;
             padding-top: 24px;
@@ -308,10 +411,9 @@
             font-size: 0.85rem;
             color: var(--text-light);
             letter-spacing: 0.03em;
-            font-family: "Times New Roman", "Georgia", serif;
+            font-family: "Merriweather", "Georgia", serif;
         }
 
-        /* 响应式 */
         @media (max-width: 600px) {
             .container {
                 padding: 36px 18px 48px;
@@ -331,6 +433,10 @@
                 gap: 2px;
             }
 
+            .entry {
+                padding: 12px 14px;
+            }
+
             .cursor-glow {
                 width: 250px;
                 height: 250px;
@@ -343,11 +449,9 @@
 
 <body>
 
-    <!-- 鼠标跟踪光晕元素 -->
     <div class="cursor-glow" id="cursorGlow"></div>
 
     <div class="container">
-        <!-- Header -->
         <header class="header">
             <h1>Yiming Li</h1>
             <p class="subtitle">Undergraduate Student, ShanghaiTech University</p>
@@ -356,7 +460,6 @@
             </div>
         </header>
 
-        <!-- About Me -->
         <section class="summary">
             <h2>About Me</h2>
             <p>
@@ -364,13 +467,23 @@
             </p>
         </section>
 
-        <!-- Research Experience -->
+        <section>
+            <h2>Education</h2>
+            <div class="entry">
+                <div class="entry-header">
+                    <span class="entry-title">B.Eng. in Computer Science</span>
+                    <span class="entry-date">2024.09 – Present</span>
+                </div>
+                <p class="entry-org">ShanghaiTech University</p>
+            </div>
+        </section>
+
         <section>
             <h2>Research Experience</h2>
             <div class="entry">
                 <div class="entry-header">
                     <span class="entry-title">Time Series Research</span>
-                    <span class="entry-date">Present</span>
+                    <span class="entry-date">2026.01 – Present</span>
                 </div>
                 <p class="entry-org">Prof. <a href="https://saying.ren/" target="_blank">Kan Ren</a>'s Group —
                     ShanghaiTech University</p>
@@ -381,7 +494,6 @@
             </div>
         </section>
 
-        <!-- Project Experience -->
         <section>
             <h2>Project Experience</h2>
             <div class="entry">
@@ -394,15 +506,14 @@
                         <em>(Lead Researcher & Primary Architect)</em>
                     </li>
                     <li>
-                        <strong>Probabilistic Opponent Inference for Heads-Up Limit Hold'em: A Rigorous Comparison of BNN-Based Agents vs. Counterfactual Regret Minimization (Ongoing)</strong><br>
+                        <strong>Probabilistic Opponent Inference for Heads-Up Limit Hold'em: A Rigorous Comparison of BNN-Based Agents vs. Counterfactual Regret Minimization <span class="status-badge status-ongoing">Ongoing</span></strong><br>
                         <em>(Lead Researcher & Sole Developer)</em>
                     </li>
                 </ul>
             </div>
             <div class="entry">
                 <div class="entry-header">
-                    <span class="entry-title">Other Project</span>
-                    <span class="entry-date">Finished</span>
+                    <span class="entry-title">Other Projects</span>
                 </div>
                 <ul>
                     <li>
@@ -413,7 +524,6 @@
             </div>
         </section>
 
-        <!-- Skills -->
         <section>
             <h2>Skills</h2>
             <div class="skills-list">
@@ -427,7 +537,6 @@
             </div>
         </section>
 
-        <!-- Personal links -->
         <section>
             <h2>Personal Links</h2>
             <div class="interests">
@@ -474,6 +583,19 @@
             }
 
             updateGlow();
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.08 });
+
+            document.querySelectorAll('section').forEach(section => {
+                observer.observe(section);
+            });
         })();
     </script>
 </body>
