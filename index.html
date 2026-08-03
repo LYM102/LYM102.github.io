@@ -166,6 +166,27 @@
             animation: headerSlideIn 0.75s var(--ease-out-expo) forwards;
         }
 
+        .header-profile {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .profile-photo {
+            width: 128px;
+            height: 128px;
+            flex: 0 0 128px;
+            object-fit: cover;
+            object-position: center 35%;
+            border-radius: 50%;
+            border: 3px solid var(--bg-card);
+            box-shadow: 0 8px 24px rgba(28, 25, 23, 0.14);
+        }
+
+        .header-text {
+            min-width: 0;
+        }
+
         .header h1 {
             font-family: "Playfair Display", "Georgia", serif;
             font-size: 2.4rem;
@@ -639,6 +660,14 @@
             .header h1 {
                 font-size: 1.9rem;
             }
+            .header-profile {
+                gap: 18px;
+            }
+            .profile-photo {
+                width: 92px;
+                height: 92px;
+                flex-basis: 92px;
+            }
             section h2 {
                 font-size: 1.15rem;
             }
@@ -676,10 +705,15 @@
 
     <div class="container">
         <header class="header">
-            <h1>Yiming Li</h1>
-            <p class="subtitle">Undergraduate Student, ShanghaiTech University</p>
-            <div class="contact-links">
-                <a href="mailto:liym2024@shanghaitech.edu.cn">liym2024@shanghaitech.edu.cn</a>
+            <div class="header-profile">
+                <img class="profile-photo" src="Figure.jpg" alt="Portrait of Yiming Li">
+                <div class="header-text">
+                    <h1>Yiming Li</h1>
+                    <p class="subtitle">Undergraduate Student, ShanghaiTech University</p>
+                    <div class="contact-links">
+                        <a href="mailto:liym2024@shanghaitech.edu.cn">liym2024@shanghaitech.edu.cn</a>
+                    </div>
+                </div>
             </div>
         </header>
 
