@@ -167,7 +167,6 @@
         }
 
         .header-profile {
-            /* 移除 flex 布局，改为块级 */
             display: block;
         }
 
@@ -686,7 +685,6 @@
     <div class="container">
         <header class="header">
             <div class="header-profile">
-                <!-- 照片已移除 -->
                 <div class="header-text">
                     <h1>Yiming Li</h1>
                     <p class="subtitle">Undergraduate Student, ShanghaiTech University</p>
@@ -728,6 +726,25 @@
                     <li>Focus on general time series generation while simultaneously optimizing its fine-grained
                         performance</li>
                 </ul>
+            </div>
+        </section>
+
+        <!-- 新增的 Publications 版块 -->
+        <section>
+            <h2>Publications</h2>
+            <div class="entry">
+                <div class="entry-header" style="margin-bottom: 6px;">
+                    <span class="entry-title">TIST: A Plug-in Toolkit for Interpretable and Fine-Grained Time Series Generation</span>
+                    <span class="entry-date">15 Oct 2026</span>
+                </div>
+                <p class="entry-org" style="margin-bottom: 6px;">
+                    Shuqi Gu*, <strong>Yiming Li*</strong>, Yongxiang Zhao, Chuyang Wang, Kan Ren
+                    <br><em style="font-size: 0.85rem; color: var(--text-light);">(* Equal contribution / Co-first author)</em>
+                </p>
+                <p class="entry-org" style="margin-bottom: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <em>ACM TheWebConf 2027 Conference Long Papers Submission</em>
+                    <span class="status-badge status-ongoing">Under Review</span>
+                </p>
             </div>
         </section>
 
@@ -778,14 +795,7 @@
             </div>
         </section>
 
-        <section>
-            <h2>Personal Links</h2>
-            <div class="interests">
-                <p>
-                    <strong>Github</strong> <a href="https://github.com/LYM102" target="_blank">https://github.com/LYM102</a>
-                </p>
-            </div>
-        </section>
+        <!-- 已删除底部的 Personal Links 版块 -->
 
         <footer class="footer" id="pageFooter">
             &copy; 2026 Yiming Li
